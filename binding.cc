@@ -317,10 +317,7 @@ namespace zmq {
 
   bool
   Socket::IsReady() {
-    zmq_pollitem_t item = {socket_, 0, ZMQ_POLLIN, 0};
-    if (pending_ > 0)
-      item.events |= ZMQ_POLLOUT;
-
+    zmq_pollitem_t item = {socket_, 0, ZMQ_POLLOUT | ZMQ_POLLIN, 0};
     int rc = zmq_poll(&item, 1, 0);
     if (rc < 0) {
       throw std::runtime_error(ErrorMessage());
